@@ -6,11 +6,11 @@
  */
 int main(void)
 {
-printf("Size of char: %zu bytes\n", sizeof(char));
-printf("Size of int: %zu bytes\n", sizeof(int));
-printf("Size of long int: %zu bytes\n", sizeof(long int));
-printf("Size of long long int: %zu bytes\n", sizeof(long long int));
-printf("Size of float: %zu bytes\n", sizeof(float));
+printf("Size of char: %zu bytes\n", (unsigned long)sizeof(char));
+printf("Size of int: %zu bytes\n", (unsigned long)sizeof(int));
+printf("Size of long int: %zu bytes\n", (unsigned long)sizeof(long int));
+printf("Size of long long int: %zu bytes\n", (unsigned long)sizeof(long long int));
+printf("Size of float: %zu bytes\n", (unsiged long)sizeof(float));
 
 return (0);
 }
