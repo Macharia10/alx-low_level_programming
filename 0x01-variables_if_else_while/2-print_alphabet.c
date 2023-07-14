@@ -13,7 +13,7 @@ int main(void)
 	int end = 122;
 	int i;
 
-	for (int i = start; i <= end; i++)
+	for (i = start; i <= end; i++)
 	{
 		putchar(i);
 	}
