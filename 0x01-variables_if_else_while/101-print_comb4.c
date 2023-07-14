@@ -16,7 +16,7 @@ int main(void)
 		{
 			while (z <= '9')
 			{
-				if (!(i < j && j < z))
+				if (i < j && j < z)
 				{
 					putchar (i);
 					putchar (j);
