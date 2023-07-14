@@ -2,7 +2,7 @@
 #include <time.h>
 #include <stdio.h>
 /**
- * main - a program that assign a random number to a variable and prints a positive or negative
+ * main - a program that assign a random number to a variable
  * Return: 0 (succes)
  */
 int main(void)
