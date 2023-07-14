@@ -11,6 +11,7 @@ int main(void)
 
 	/*ASCII value of 'z'*/
 	int end = 122;
+	int i;
 
 	for (int i = start; i <= end; i++)
 	{
