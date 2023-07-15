@@ -41,7 +41,6 @@ int main(void)
 				putchar(c + '0');
 				/*print the second digit of the second number*/
 				putchar(d + '0');
-
 			}
 		}
 	}
