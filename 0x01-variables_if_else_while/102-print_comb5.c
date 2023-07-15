@@ -8,6 +8,7 @@ int main(void)
 {
 	int i;
 	int j;
+	int comma = 0;
 
 	for (i = 0; i < 100; i++)
 	{
@@ -20,6 +21,16 @@ int main(void)
 
 			if (a != c || b != d)
 			{
+				/*check if you nedd command and space*/
+				if (comma)
+				{
+					putchar(',');
+					putchar(' ');
+				}
+				else
+				{
+					comma = 1;
+				}
 				/*print the first digit of the first number*/
 				putchar(a + '0');
 				/*print the second digit of the first number*/
@@ -31,12 +42,6 @@ int main(void)
 				/*print the second digit of the second number*/
 				putchar(d + '0');
 
-				/*check commas and space*/
-				if (i != 99 || j != 99)
-				{
-					putchar(',');
-					putchar(' ');
-				}
 			}
 		}
 	}
