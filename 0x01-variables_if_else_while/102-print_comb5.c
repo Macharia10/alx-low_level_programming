@@ -18,22 +18,25 @@ int main(void)
 			int c = j / 10;
 			int d = j % 10;
 
-			/*print the first digit of the first number*/
-			putchar(a + '0');
-			/*print the second digit of the first number*/
-			putchar(b + '0');
-			/*print space*/
-			putchar(' ');
-			/*print the first digit of the second numbe*/
-			putchar(c + '0');
-			/*print the second digit of the second number*/
-			putchar(d + '0');
-
-			/*check commas and space*/
-			if (i != 99 || j != 99)
+			if (a != c || b != d)
 			{
+				/*print the first digit of the first number*/
+				putchar(a + '0');
+				/*print the second digit of the first number*/
+				putchar(b + '0');
+				/*print space*/
 				putchar(' ');
-				putchar(',');
+				/*print the first digit of the second numbe*/
+				putchar(c + '0');
+				/*print the second digit of the second number*/
+				putchar(d + '0');
+
+				/*check commas and space*/
+				if (i != 99 || j != 99)
+				{
+					putchar(',');
+					putchar(' ');
+				}
 			}
 		}
 	}
