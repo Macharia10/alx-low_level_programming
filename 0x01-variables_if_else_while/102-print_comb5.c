@@ -22,6 +22,8 @@ int main(void)
 			putchar(a + '0');
 			/*print the second digit of the first number*/
 			putchar(b + '0');
+			/*print space*/
+			putchar(' ');
 			/*print the first digit of the second numbe*/
 			putchar(c + '0');
 			/*print the second digit of the second number*/
