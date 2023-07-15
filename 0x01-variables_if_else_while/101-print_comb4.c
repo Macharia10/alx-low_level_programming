@@ -23,7 +23,7 @@ int main(void)
 					putchar (z);
 					if (!(i == '7' && j == '8' && z == '9'))
 					{
-						putchar('.');
+						putchar(',');
 						putchar(' ');
 					}
 				}
