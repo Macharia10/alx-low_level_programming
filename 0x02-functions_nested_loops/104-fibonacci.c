@@ -8,7 +8,7 @@
 int main(void)
 {
 	int i;
-	unsigned long int t1 = 0, t2 = 1, n = 0;
+	unsigned long int t1 = 1, t2 = 2, n = 0;
 
 	printf("%lu, %lu", t1, t2);
 	for (i = 3; i <= 98; i++)
