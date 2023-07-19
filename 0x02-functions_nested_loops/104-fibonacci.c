@@ -1,34 +1,24 @@
 #include <stdio.h>
 
 /**
- * printFibonacci - a function that calculates and prints the first n
- * fib numbers separated with a comma and space
- * @n: character to check
- */
-void printFibonacci(int n)
-{
-	int a = 1, b = 2;
-
-	printf("%d, %d, ", a, b);
-
-	for (int i = 2; i < n; i++)
-	{
-		int c = a + b;
-
-		printf("%d%s", c, (i == n - 1) ? "\n" : ", ");
-		a = b;
-		b = c;
-	}
-}
-/**
- * main - a function that calls printFibonacci function.
- * Return: 0 (success)
+ * main - finds and prints the first 98 Fibonacci numbers,
+ * starting with 1 and 2
+ * Return: Always 0 (Success)
  */
 int main(void)
 {
-	int n = 98;
+	int i;
+	unsigned long int t1 = 0, t2 = 1, n = 0;
 
-	printFibonacci(n);
+	printf("%lu, %lu", t1, t2);
+	for (i = 3; i <= 98; i++)
+	{
+		n = t1 + t2;
 
+		printf(", %lu", n);
+		t1 = t2;
+		t2 = n;
+	}
+	printf("\n");
 	return (0);
 }
