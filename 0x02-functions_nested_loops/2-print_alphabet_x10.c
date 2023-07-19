@@ -3,19 +3,19 @@
 /**
  * print_alphabet_x10 - print 10times the alphabet in lowercase
  */
-void print_alphabet_x10(void);
+void print_alphabet_x10(void)
 {
 	char j;
 	int i;
 
 	i = 0;
 
-	while(i < 10)
+	while (i < 10)
 	{
 		j = 'a';
 		while (j <= 'z')
 		{
-			putchar(j);
+			_putchar(j);
 			j++;
 		}
 		_putchar('\n');
