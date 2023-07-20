@@ -25,13 +25,13 @@ int main(void)
 		{
 			printf(" FizzBuzz");
 		}
-		else if (i == 1)
+		else if (i != 100)
 		{
-			printf("%d", i);
+			printf(" ");
 		}
 		else
 		{
-			printf(" %d", i);
+			printf("%d", i);
 		}
 	}
 	printf('\n');
