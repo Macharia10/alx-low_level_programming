@@ -1,23 +1,25 @@
 #include "main.h"
 
 /**
- * print_line - func that draws a straight line
- * @n: number of times the character _ should be printed 
+ * print_line - Prints a line.
+ * @n: Number of lines.
+ *
+ *Return: Always void.
  */
 void print_line(int n)
 {
-	if (n <= 0)
+	int line;
+
+	if (n > 0)
 	{
+		for (line = 1 ; line <= n ; line++)
+		{
+			_putchar(95);
+		}
 		_putchar('\n');
 	}
 	else
 	{
-		int i;
-
-		for (i = 1; i <= n; i++)
-		{
-			_putchar('_');
-		}
 		_putchar('\n');
 	}
 }
