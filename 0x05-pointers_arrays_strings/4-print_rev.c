@@ -21,4 +21,3 @@ void print_rev(char *s)
 
 	printf("\n");
 }
-}
