@@ -1,5 +1,4 @@
 #include "main.h"
-#include <stddef.h>
 #include <stdio.h>
 
 /**
@@ -8,13 +7,6 @@
  */
 void print_rev(char *s)
 {
-	if (s == NULL)
-	{
-		/* Handle the case where the input string is NULL*/
-		printf("Input string is NULL.\n");
-	return;
-	}
-
 	/*Find the length of the string*/
 	int length = 0;
 
