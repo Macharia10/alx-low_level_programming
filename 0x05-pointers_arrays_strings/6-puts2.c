@@ -11,15 +11,16 @@ void puts2(char *str)
 	int length = 0;
 	int t = 0;
 	char *y;
+	int i;
 
 	while (*y != '\0')
 	{
 		y++;
 		length++;
 	}
-	t = lenth - 1;
+	t = length - 1;
 
-	for (int i = 0; i <= t; i++)
+	for (i = 0; i <= t; i++)
 	{
 		if (i % 2 == 0)
 		{
