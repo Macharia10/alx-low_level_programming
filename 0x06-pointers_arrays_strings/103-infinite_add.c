@@ -5,36 +5,46 @@
  * @n1: Pointer to the first charcter of number 1
  * @n2: Pointer to the first charcter of number 2
  * @r: Buffer where to put result
- * @n: Buffer size
+ * @size_r: Buffer size
  * Return: Pointer to result
  */
 char *infinite_add(char *n1, char *n2, char *r, int size_r)
 {
-	int len1 = 0, len2 = 0;
-	int add = 0;
-	int i = n - 2;
+	int overflow = 0, i = 0, j = 0, digits = 0;
+	int val1 = 0, val2 = 0, temp_tot = 0;
 
-	while (n1[len1 + 1] != 0)
-		len1++;
-	while (n2[len2 + 1] != 0)
-		len2++;
-	r[n - 1] = 0;
-
-	while (i >= 0 && (len1 >= 0 || len2 >= 0))
+	while (*(n1 + i) != '\0')
+		i++;
+	while (*(n2 + j) != '\0')
+		j++;
+	i--;
+	j--;
+	if (j >= size_r || i >= size_r)
+		return (0);
+	while (j >= 0 || i >= 0 || overflow == 1)
 	{
-		add += (len1 < 0 ? '0' : n1[len1]) + (len2 < 0 ? '0' : n2[len2]);
-		add -= 2 * '0';
-		add /= 10;
+		if (i < 0)
+			val1 = 0;
+		else
+			val1 = *(n1 + 1) - '0';
+		if (j < 0)
+			val2 = 0;
+		else
+			val2 = *(n2 + j) - '0';
+		temp_tot = val1 + val2 + overflow;
+		if (temp_tot >= 10)
+			overflow = 1;
+		else
+			overflow = 0;
+		if (digits >= (size_r - 1))
+			return (0);
+		*(r + digits) = (temp_tot % 10) + '0';
+		digits++;
+		j--;
 		i--;
-		len1--;
-		len2--;
 	}
-
-	if ((i < len1 || i < len2) || (i < 0 && add))
-	return (0);
-
-	add ? r[i] =  add + '0' : 1;
-	i += add ? 0 : 1;
-
-	return (r + 1);
+	if (digits == size_r)
+		return (0);
+	*(r + digits) = '\0';
+	return (r);
 }
