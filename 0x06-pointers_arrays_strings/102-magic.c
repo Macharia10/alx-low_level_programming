@@ -1,8 +1,5 @@
 #include <stdio.h>
-/**
- * main - a program that prints a[2] = 98
- * Return: 0 (success)
- */
+
 int main(void)
 {
 	int n;
