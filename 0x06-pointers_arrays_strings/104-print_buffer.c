@@ -19,11 +19,10 @@ void print_buffer(char *b, int size)
 	}
 	while (offset < size)
 	{
-		j = size - offset < 10 ? size - offset : 10;
 		printf("%08x: ", offset);
 		for (i = 0; i < 10; i++)
 		{
-			if (i < j)
+			if (offset + i < size)
 				printf("%02x", *(b + offset + i));
 			else
 				printf(" ");
@@ -32,15 +31,17 @@ void print_buffer(char *b, int size)
 				printf(" ");
 			}
 		}
-		for (i = 0; i < j; i++)
+		for (i = 0; i < 10; i++)
 		{
+			if (offset + i >= size)
+				break;
+
 			int c = *(b + offset + i);
 
-		if (c < 32 || c > 127)
-		{
-			c = '.';
-		}
-		printf("%c", c);
+			if (c >= 32 && c <= 126)
+				printf("%c", c);
+			else
+				print(".");
 	}
 	printf("\n");
 	offset += 10;
