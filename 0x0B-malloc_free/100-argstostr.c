@@ -4,8 +4,8 @@
 
 /**
  * *argstostr - function that concatenates all the arguments of your program.
- * @ac: input
- * @**av: pointer char
+ * @ac: argument count
+ * @av: argument vector
  *
  * Return: concatenated argument
  */
@@ -21,7 +21,7 @@ char *argstostr(int ac, char **av)
 	{
 		length += strlen(av[i]) + 1;
 	}
-	res = (char *)malloc(length * sizeof(char));
+	res = (char *)malloc(length * sizeof(char) + 1);
 
 	if (res == NULL)
 		return (NULL);
