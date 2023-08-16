@@ -10,12 +10,12 @@
  */
 void print_opcodes(char *a, int n)
 {
-	int a;
+	int i;
 
-	for (a = 0; a < n; a++)
+	for (i = 0; i < n; i++)
 	{
 		printf("%.2hhx", a[i]);
-		if (a < n - 1)
+		if (i < n - 1)
 			printf(" ");
 	}
 	printf("\n");
