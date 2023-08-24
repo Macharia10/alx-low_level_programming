@@ -10,7 +10,7 @@
  */
 list_t *add_node(list_t **head, const char *str)
 {
-	char *str_copy;
+	size_t len = 0;
 	list_t *new_node;
 
 	if (str == NULL)
@@ -24,19 +24,17 @@ list_t *add_node(list_t **head, const char *str)
 		return (NULL);
 	}
 
-	str_copy = strdup(str);
-	if (str_copy == NULL)
+	new_node->str = strdup(str);
+	if (new_node->str == NULL)
 	{
 		free(new_node);
 		return (NULL);
 	}
-
-	new_node->str = str_copy;
-	new_node->len = 0;
-	while (str[new_node->len] != '\0')
+	while (str[len] != '\0')
 	{
-		new_node->len++;
+		len++;
 	}
+	new_node->len = len;
 	new_node->next = *head;
 
 	*head = new_node;
