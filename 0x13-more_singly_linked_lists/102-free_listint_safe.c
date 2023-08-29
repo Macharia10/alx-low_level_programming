@@ -28,17 +28,18 @@ listint_t *find_listint_loop_p(listint_t *head)
  */
 size_t free_listint_safe(listint_t **h)
 {
-	size_t s = 0;
-	listint_t *loopnode = find_listint_loop_p(*h);
+	size_t s;
+	listint_t *loopnode, *next;
 	int loop = 1;
 
 	if (h == NULL || *h == NULL)
 		return (0);
 
-	for (s; (*h != loopnode || loop) && *h != NULL; *h = next)
+	loopnode = find_listint_loop_p(*h);
+	for (s = 0; (*h != loopnode || loop) && *h != NULL; *h = next)
 	{
 		s++;
-		next = (*h)-next;
+		next = (*h)->next;
 
 		if (*h == loopnode && loop)
 		{
