@@ -7,20 +7,15 @@
  */
 listint_t *find_listint_loop_p(listint_t *head)
 {
-	listint_t *star, *end;
+	listint_t *slow = head, *fast = head;
 
-	if (head == NULL)
-		return (NULL);
-
-	for (end = head->next; end != NULL; end = end->next)
+	while (slow && fast && fast->next)
 	{
-		if (end == end->next)
-			return (end);
-		for (star = head; star != end; star = star->next)
-		{
-			if (star == end->next)
-				return (end->next);
-		}
+		slow = slow->next;
+		fast = fast->next->next;
+
+		if (slow == fast)
+			return (slow);
 	}
 	return (NULL);
 }
@@ -35,16 +30,17 @@ size_t free_listint_safe(listint_t **h)
 {
 	size_t s = 0;
 	listint_t *loopnode = find_listint_loop_p(*h);
-	listint_t *temp;
+	int loop = 1;
 
-	while (*h && ((*h != loopnode) || (loopnode == NULL)))
+	if (h == NULL || *h == NULL)
+		return (0);
+
+	for (s; (*h != loopnode || loop) && *h != NULL; *h = next)
 	{
-		temp = (*h)->next;
-		free(*h);
-		*h = temp;
 		s++;
+		next = (*h)-next;
 
-		if (*h == loopnode)
+		if (*h == loopnode && loop)
 		{
 			if (loopnode == loopnode->next)
 			{
@@ -52,11 +48,11 @@ size_t free_listint_safe(listint_t **h)
 				break;
 			}
 			s++;
-			temp = (*h)->next;
-			free(*h);
-			*h = temp;
-			loopnode = NULL;
+			next = next->next;
+			free((*h)->next);
+			loop = 0;
 		}
+		free(*h);
 	}
 	*h = NULL;
 	return (s);
