@@ -1,106 +1,77 @@
 #include "main.h"
 
+/**
+ * error_exit - Print an error message and exit with the specified code.
+ * @code: The exit code.
+ * @message: The error message to display.
+ */
+void error_exit(int code, const char *message)
+{
+	dprintf(STDERR_FILENO, "Error: %s\n", message);
+	exit(code);
+}
 
 /**
- * main - Copy the content of one file to another file.
- * @argc: number of command-line arguments.
- * @argv: array of command-line argument strings.
- *
- * Return: 0 on success, or an error code on failure.
+ * copy_file - Copy the content of one file to another.
+ * @file_from: The source file path.
+ * @file_to: The destination file path.
+ */
+void copy_file(const char *file_from, const char *file_to)
+{
+	int fd_from, fd_to;
+	char buffer[1024];
+	ssize_t bytes_read, bytes_written;
+
+	/* Open the source file for reading*/
+	fd_from = open(file_from, O_RDONLY);
+	if (fd_from == -1)
+		error_exit(98, "Can't read from file");
+	
+	/* Open or create the destination file for writing, with permissions rw-rw-r--*/
+	fd_to = open(file_to, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH);
+	if (fd_to == -1)
+		error_exit(99, "Can't write to file");
+	
+	/* Copy data from source to destination using a buffer*/
+	while ((bytes_read = read(fd_from, buffer, sizeof(buffer))) > 0)
+	{
+		bytes_written = write(fd_to, buffer, bytes_read);
+		if (bytes_written == -1)
+			error_exit(99, "Can't write to file");
+	}
+	if (bytes_read == -1)
+		error_exit(98, "Can't read from file");
+	
+	/* Close both files and check for errors*/
+	if (close(fd_from) == -1)
+		error_exit(100, "Can't close fd");
+
+	if (close(fd_to) == -1)
+		error_exit(100, "Can't close fd");
+}
+
+/**
+ * main - The main entry point of the program.
+ * @argc: The number of command-line arguments.
+ * @argv: An array of command-line argument strings.
+ * Return: 0 on success, other values on error.
  */
 int main(int argc, char *argv[])
 {
-	int res;
+	const char *file_from, *file_to;
 
+	/* Check the number of arguments*/
 	if (argc != 3)
 	{
-		dprintf(2, "Usage: %s file_from file_to\n", argv[0]);
-		return (97);
+		error_exit(97, "Usage: cp file_from file_to");
 	}
+	
+	/* Get the source and destination file paths from command line arguments*/
+	file_from = argv[1];
+	file_to = argv[2];
 
-	res = copy_file(argv[1], argv[2]);
-	if (res == 98)
-		dprintf(2, "Error: Can't read from file %s\n", argv[1]);
-	else if (res == 99)
-		dprintf(2, "Error: Can't write to file %s\n", argv[2]);
-	else if (res == 100)
-		dprintf(2, "Error: Can't close file descriptor\n");
-
-	return (res);
-}
-
-/**
- * copy_file - Copy the content of one file to another file.
- * @src_filename: source filename.
- * @dest_filename: destination filename.
- *
- * Return: 0 on success, or an error code on failure.
- */
-int copy_file(const char *src, const char *dest)
-{
-	int fd_from, fd_to;
-	char buffer[BUFFSIZE];
-	ssize_t r_bytes, w_bytes;
-
-	fd_from = open(src, O_RDONLY);
-	if (fd_from == -1)
-		return (98);
-
-	fd_to = open(dest, O_WRONLY | O_CREAT | O_TRUNC, 0664);
-	if (fd_to == -1)
-	{
-		close(fd_from);
-		return (99);
-	}
-
-	while ((r_bytes = read(fd_from, buffer, BUFFSIZE)) > 0)
-	{
-		w_bytes = write(fd_to, buffer, r_bytes);
-		if (w_bytes == -1 || w_bytes != r_bytes)
-		{
-			close(fd_from);
-			close(fd_to);
-			return (99);
-		}
-	}
-
-	if (r_bytes == -1)
-	{
-		close(fd_from);
-		close(fd_to);
-		return (98);
-	}
-
-	if (close(fd_from) == -1 || close(fd_to) == -1)
-		return (100);
+	/* Copy the content of the source file to the destination file */
+	copy_file(file_from, file_to);
 
 	return (0);
-}
-/**
- * print_type - prints type
- * @ptr: magic.
- * Return: no return.
- */
-void print_type(char *ptr)
-{
-	char type = ptr[16];
-
-	if (ptr[5] == 1)
-		type = ptr[16];
-	else
-		type = ptr[17];
-
-	printf("  Type:                              ");
-	if (type == 0)
-		printf("NONE (No file type)\n");
-	else if (type == 1)
-		printf("REL (Relocatable file)\n");
-	else if (type == 2)
-		printf("EXEC (Executable file)\n");
-	else if (type == 3)
-		printf("DYN (Shared object file)\n");
-	else if (type == 4)
-		printf("CORE (Core file)\n");
-	else
-		printf("<unknown: %x>\n", type);
 }
