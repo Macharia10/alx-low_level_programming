@@ -26,12 +26,13 @@ void copy_file(const char *file_from, const char *file_to)
 	fd_from = open(file_from, O_RDONLY);
 	if (fd_from == -1)
 		error_exit(98, "Can't read from file");
-	
-	/* Open or create the destination file for writing, with permissions rw-rw-r--*/
-	fd_to = open(file_to, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH);
+
+	/* Open or create the destination file*/
+	fd_to = open(file_to, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR |
+			S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH);
 	if (fd_to == -1)
 		error_exit(99, "Can't write to file");
-	
+
 	/* Copy data from source to destination using a buffer*/
 	while ((bytes_read = read(fd_from, buffer, sizeof(buffer))) > 0)
 	{
@@ -41,7 +42,7 @@ void copy_file(const char *file_from, const char *file_to)
 	}
 	if (bytes_read == -1)
 		error_exit(98, "Can't read from file");
-	
+
 	/* Close both files and check for errors*/
 	if (close(fd_from) == -1)
 		error_exit(100, "Can't close fd");
@@ -65,7 +66,7 @@ int main(int argc, char *argv[])
 	{
 		error_exit(97, "Usage: cp file_from file_to");
 	}
-	
+
 	/* Get the source and destination file paths from command line arguments*/
 	file_from = argv[1];
 	file_to = argv[2];
