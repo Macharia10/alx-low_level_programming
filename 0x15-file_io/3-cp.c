@@ -1,63 +1,75 @@
 #include "main.h"
 
 /**
- * print_error_and_exit - Prints an error message and exits the program
- * @code: The exit code to use
- * @msg: The error message to print
- * @filename: The name of the file associated with the error
- * @fd: File descriptor to close (if necessary)
+ * copy_file - Copies content from one file to another.
+ *
+ * @file_from: Source file name
+ * @file_to: Destination file name
  */
-void print_error_and_exit(int code, const char *msg,
-		const char *filename, int fd)
+void copy_file(const char *file_from, const char *file_to)
 {
-	if (fd != -1)
-		close(fd);
-	dprintf(STDERR_FILENO, "%s %s\n", msg, filename);
-	exit(code);
-}
+	int fd_from, fd_to;
+	char buffer[BUFFER_SIZE];
+	ssize_t bytesR, bytesW;
 
+	fd_from = open(file_from, O_RDONLY);
+	if (fd_from == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file_from);
+		exit(98);
+	}
+	fd_to = open(file_to, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd_to == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file_to);
+		close(fd_from);
+		exit(99);
+	}
+	while ((bytesR = read(fd_from, buffer, BUFFER_SIZE)) > 0)
+	{
+		bytesW = write(fd_to, buffer, bytesR);
+		if (bytesW != bytesR)
+		{
+			dprintf(STDERR_FILENO, "Error: Incomplete write to %s\n", file_to);
+			close(fd_from);
+			close(fd_to);
+			exit(99);
+		}
+	}
+	if (bytesR == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file_from);
+		close(fd_from);
+		close(fd_to);
+		exit(98);
+	}
+	if (close(fd_from) == -1 || close(fd_to) == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close file descriptors\n");
+		exit(100);
+	}
+	if (chmod(file_to, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH) == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't set file permissions\n");
+		exit(101);
+	}
+}
 /**
- * main - Copies the content of one file to another file
- * @argc: Number of arguments
- * @argv: Array of argument strings
- * Return: 0 on success, appropriate error code otherwise
+ * main - Entry point of the program.
+ *
+ * @argc: param argc Number of command-line arguments
+ * @argv: param argv Array of command-line argument strings
+ * Return: 0 on successful execution, otherwise exits with specific error codes
  */
 int main(int argc, char *argv[])
 {
-	int file_from, file_to;
-	char buffer[BUFFER_SIZE];
-	ssize_t bytes_read, bytes_written;
-
 	if (argc != 3)
 	{
 		dprintf(STDERR_FILENO, "Usage: %s file_from file_to\n", argv[0]);
-		return (97);
+		exit(97);
 	}
-
-	file_from = open(argv[1], O_RDONLY);
-	if (file_from == -1)
-		print_error_and_exit(98, "Error: Can't read from file", argv[1], -1);
-
-	file_to = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC,
-			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-	if (file_to == -1)
-		print_error_and_exit(99, "Error: Can't write to file",
-				argv[2], file_from);
-
-	while ((bytes_read = read(file_from, buffer, BUFFER_SIZE)) > 0)
-	{
-		bytes_written = write(file_to, buffer, bytes_read);
-		if (bytes_written != bytes_read)
-			print_error_and_exit(99, "Error: Can't write to file",
-					argv[2], file_from);
-	}
-
-	if (bytes_read == -1)
-		print_error_and_exit(98, "Error: Can't read from file",
-				argv[1], file_from);
-
-	if (close(file_from) == -1 || close(file_to) == -1)
-		print_error_and_exit(100, "Error: Can't close fd", "", -1);
+	copy_file(argv[1], argv[2]);
 
 	return (0);
 }
+
